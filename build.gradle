@@ -1,0 +1,83 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id "com.github.johnrengelman.shadow" version "7.1.2"
+    id 'com.google.protobuf' version '0.9.1'
+}
+
+group = 'com.bongbong.cobl'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:23.0.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.26'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
+
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
+    implementation group: 'org.mongodb', name: 'mongodb-driver-sync', version: '4.8.1'
+
+    runtimeOnly 'io.grpc:grpc-netty-shaded:1.54.1'
+    implementation 'io.grpc:grpc-protobuf:1.54.1'
+    implementation 'io.grpc:grpc-stub:1.54.1'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
+
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.7'
+
+    compileOnly 'com.github.proxiodev.redisbungee:RedisBungee-API:0.11.1'
+    compileOnly 'com.github.proxiodev.redisbungee:RedisBungee-Velocity:0.11.1'
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.21.7"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.54.1'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+compileJava { // Preserve parameter names in the bytecode
+    options.compilerArgs += ["-parameters"]
+    options.fork = true
+    options.forkOptions.executable = "javac"
+}
+
+def targetJavaVersion = 8
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+shadowJar {
+    archiveBaseName.set("DevMan")
+    archiveClassifier.set("")
+}

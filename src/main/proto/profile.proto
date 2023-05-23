@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.bongbong.cobl.grpc.profile";
+option java_outer_classname = "ProfileProto";
+option objc_class_prefix = "PP";
+
+package profile;
+
+// The greeting service definition.
+service Requester {
+  // Sends a greeting
+  rpc GetProfile (ProfileRequest) returns (ProfileReply) {}
+}
+
+// The request message containing the user's name.
+message ProfileRequest {
+  string uuid = 1;
+}
+
+// The response message containing the greetings
+message ProfileReply {
+  string uuid = 1;
+  string jsonProfile = 2;
+}
