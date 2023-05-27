@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'idea'
+    id 'maven-publish'
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id 'com.google.protobuf' version '0.9.1'
 }
@@ -78,6 +79,6 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 shadowJar {
-    archiveBaseName.set("DevMan")
+    archiveBaseName.set("devman")
     archiveClassifier.set("")
 }
