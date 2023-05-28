@@ -40,6 +40,19 @@ dependencies {
     compileOnly 'com.github.proxiodev.redisbungee:RedisBungee-Velocity:0.11.1'
 }
 
+
+publishing {
+    publications {
+        shadow(MavenPublication) {
+            groupId = 'com.bongbong.cobl'
+            artifactId = 'devman'
+            version = '1.0.0'
+
+            from components.java
+        }
+    }
+}
+
 protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:3.21.7"
@@ -55,12 +68,6 @@ protobuf {
         }
     }
 }
-//
-//compileJava { // Preserve parameter names in the bytecode
-//    options.compilerArgs += ["-parameters"]
-//    options.fork = true
-//    options.forkOptions.executable = "javac"
-//}
 
 def targetJavaVersion = 17
 java {
@@ -70,15 +77,4 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
-    }
-}
-
-shadowJar {
-    archiveBaseName.set("devman")
-    archiveClassifier.set("")
 }
