@@ -62,7 +62,7 @@ compileJava { // Preserve parameter names in the bytecode
     options.forkOptions.executable = "javac"
 }
 
-def targetJavaVersion = 8
+def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
