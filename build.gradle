@@ -55,12 +55,12 @@ protobuf {
         }
     }
 }
-
-compileJava { // Preserve parameter names in the bytecode
-    options.compilerArgs += ["-parameters"]
-    options.fork = true
-    options.forkOptions.executable = "javac"
-}
+//
+//compileJava { // Preserve parameter names in the bytecode
+//    options.compilerArgs += ["-parameters"]
+//    options.fork = true
+//    options.forkOptions.executable = "javac"
+//}
 
 def targetJavaVersion = 17
 java {
